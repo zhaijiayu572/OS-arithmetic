@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank</title>
+    <script src="jQuery/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<label for="number">输入进程的数量：</label><input type="text" id="number">
+<button onclick="max()">create</button>
+<ul id="Max">
+    <button onclick="allocation()" style="display: none" id="next">next</button><br/>
+</ul>
+
+<ul id="Allocation">
+    <button onclick="need()" style="display: none" id="then">then</button><br/>
+</ul>
+<ul id="Need">
+    <button onclick="available()" style="display: none" id="last">last</button><br/>
+</ul>
+<ul id="Available">
+    <button onclick="allocation()" style="display: none" id="finish">finish</button><br/>
+</ul>
+<script>
+    function max() {
+        var Number = $("#number").val();
+        for(var i=0;i<Number;i++)
+        {
+            $("#Max").append("<input type='text' class='max' placeholder='进程"+(i+1)+"'>" +
+                    "<br/><h3>输入第"+(i+1)+"个进程最大资源</h3>");
+        };
+        $("#next").show();
+    }
+    function allocation() {
+        $("#Max").hide();
+        var Number = $("#number").val();
+        for(var i=0;i<Number;i++)
+        {
+            $("#Allocation").append("<input type='text' class='allocation' placeholder='进程"+(i+1)+"'>" +
+                    "<br/><h3>输入第"+(i+1)+"个进程占有的资源</h3>");
+        }
+        $("#then").show();
+    }
+    function need() {
+        $("#Allocation").hide();
+        var Number = $("#number").val();
+        for(var i=0;i<Number;i++)
+        {
+            $("#Need").append("<input type='text' class='need' placeholder='进程"+(i+1)+"'>" +
+                    "<br/><h3>输入第"+(i+1)+"个进程需要的资源</h3>");
+        }
+        $("#last").show();
+    }
+    function available() {
+        $("#Need").hide();
+        $("#Available").append("<input type='text' class='available' placeholder='输入资源'>" +
+                "<br/><h3>输入现有的资源</h3>");
+        $("#finish").show();
+    }
+</script>
+</body>
+</html>
