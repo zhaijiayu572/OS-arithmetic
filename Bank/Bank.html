@@ -19,43 +19,99 @@
     <button onclick="available()" style="display: none" id="last">last</button><br/>
 </ul>
 <ul id="Available">
-    <button onclick="allocation()" style="display: none" id="finish">finish</button><br/>
+    <button onclick="finish()" style="display: none" id="finish">finish</button><br/>
+    <button onclick="result()" style="display: none" id="result">result</button><br/>
 </ul>
 <script>
+    var iMaxVal = [];
+    var iNeedVal = [];
+    var iAllocationVal = [];
+    var iAvailableVal = 0;
+
     function max() {
         var Number = $("#number").val();
+        alert(Number);
         for(var i=0;i<Number;i++)
         {
             $("#Max").append("<input type='text' class='max' placeholder='进程"+(i+1)+"'>" +
                     "<br/><h3>输入第"+(i+1)+"个进程最大资源</h3>");
-        };
+        }
         $("#next").show();
     }
     function allocation() {
         $("#Max").hide();
         var Number = $("#number").val();
+        var iMax = document.getElementsByClassName("max");
+
         for(var i=0;i<Number;i++)
         {
             $("#Allocation").append("<input type='text' class='allocation' placeholder='进程"+(i+1)+"'>" +
                     "<br/><h3>输入第"+(i+1)+"个进程占有的资源</h3>");
+            iMaxVal[i] = iMax[i].value;
         }
         $("#then").show();
     }
     function need() {
-        $("#Allocation").hide();
         var Number = $("#number").val();
+        var iAllocation = document.getElementsByClassName("allocation");
+        $("#Allocation").hide();
+
         for(var i=0;i<Number;i++)
         {
             $("#Need").append("<input type='text' class='need' placeholder='进程"+(i+1)+"'>" +
                     "<br/><h3>输入第"+(i+1)+"个进程需要的资源</h3>");
+            iAllocationVal[i] = iAllocation[i].value;
         }
         $("#last").show();
     }
-    function available() {
+    function available(){
+        var iNeed = document.getElementsByClassName("need");
+        var Number = $("#number").val();
+        for(var i=0;i<Number;i++){
+            iNeedVal[i] = iNeed[i].value;
+        }
         $("#Need").hide();
         $("#Available").append("<input type='text' class='available' placeholder='输入资源'>" +
                 "<br/><h3>输入现有的资源</h3>");
         $("#finish").show();
+        $("#result").show();
+    }
+
+    function finish() {
+
+        var iAvailable = document.getElementsByClassName("available");
+        iAvailableVal = iAvailable[0].value;
+//        console.log(iNeedVal[0]);
+//        console.log(iAvailableVal);
+
+        }
+        function result() {
+            var iFlag = -1;
+            console.log(iNeedVal.length);
+            if(iNeedVal.length == 0) {
+                alert('程序安全');
+            }else{
+                for(var i=0;i<iNeedVal.length;i++) {
+                    if(iAvailableVal>(iNeedVal[i]-1)) {
+                        console.log(iAvailableVal + "available");
+                        console.log(iNeedVal[i] + 'need');
+                        iFlag = i;
+                        iNeedVal.splice(i,1);
+                        break;
+                    }
+
+                }
+                if(iFlag!= -1) {
+                    console.log(iAllocationVal[iFlag] + "allocation");
+                    iAvailableVal = parseInt(iAvailableVal)+ parseInt(iAllocationVal[iFlag]);
+                    console.log(iAvailableVal + "available");
+                    result();
+                }else {
+                    alert("系统不安全");
+                }
+        }
+
+
     }
 </script>
 </body>
