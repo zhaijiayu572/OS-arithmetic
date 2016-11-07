@@ -23,11 +23,11 @@
     <button onclick="result()" style="display: none" id="result">result</button><br/>
 </ul>
 <script>
-    var iMaxVal = [];
-    var iNeedVal = [];
-    var iAllocationVal = [];
+    var aMaxVal = [];
+    var aNeedVal = [];
+    var aAllocationVal = [];
     var iAvailableVal = 0;
-
+    var aProcess = [];
     function max() {
         var Number = $("#number").val();
         alert(Number);
@@ -35,6 +35,7 @@
         {
             $("#Max").append("<input type='text' class='max' placeholder='进程"+(i+1)+"'>" +
                     "<br/><h3>输入第"+(i+1)+"个进程最大资源</h3>");
+            aProcess.push('p'+i);
         }
         $("#next").show();
     }
@@ -47,7 +48,7 @@
         {
             $("#Allocation").append("<input type='text' class='allocation' placeholder='进程"+(i+1)+"'>" +
                     "<br/><h3>输入第"+(i+1)+"个进程占有的资源</h3>");
-            iMaxVal[i] = iMax[i].value;
+            aMaxVal[i] = iMax[i].value;
         }
         $("#then").show();
     }
@@ -60,7 +61,7 @@
         {
             $("#Need").append("<input type='text' class='need' placeholder='进程"+(i+1)+"'>" +
                     "<br/><h3>输入第"+(i+1)+"个进程需要的资源</h3>");
-            iAllocationVal[i] = iAllocation[i].value;
+            aAllocationVal[i] = iAllocation[i].value;
         }
         $("#last").show();
     }
@@ -68,7 +69,7 @@
         var iNeed = document.getElementsByClassName("need");
         var Number = $("#number").val();
         for(var i=0;i<Number;i++){
-            iNeedVal[i] = iNeed[i].value;
+            aNeedVal[i] = iNeed[i].value;
         }
         $("#Need").hide();
         $("#Available").append("<input type='text' class='available' placeholder='输入资源'>" +
@@ -85,25 +86,31 @@
 //        console.log(iAvailableVal);
 
         }
+
+
+        var aSaveQueue = [];
         function result() {
             var iFlag = -1;
-            console.log(iNeedVal.length);
-            if(iNeedVal.length == 0) {
+            console.log(aNeedVal.length);
+            if(aNeedVal.length == 0) {
                 alert('程序安全');
+                alert("安全序列为"+aSaveQueue);
             }else{
-                for(var i=0;i<iNeedVal.length;i++) {
-                    if(iAvailableVal>(iNeedVal[i]-1)) {
+                for(var i=0;i<aNeedVal.length;i++) {
+                    if(iAvailableVal>(aNeedVal[i]-1)) {
                         console.log(iAvailableVal + "available");
-                        console.log(iNeedVal[i] + 'need');
+                        console.log(aNeedVal[i] + 'need');
                         iFlag = i;
-                        iNeedVal.splice(i,1);
+                        aNeedVal.splice(i,1);
+                        aSaveQueue.push(aProcess[i]);
+                        aProcess.splice(i,1);
                         break;
                     }
 
                 }
                 if(iFlag!= -1) {
-                    console.log(iAllocationVal[iFlag] + "allocation");
-                    iAvailableVal = parseInt(iAvailableVal)+ parseInt(iAllocationVal[iFlag]);
+                    console.log(aAllocationVal[iFlag] + "allocation");
+                    iAvailableVal = parseInt(iAvailableVal)+ parseInt(aAllocationVal[iFlag]);
                     console.log(iAvailableVal + "available");
                     result();
                 }else {
