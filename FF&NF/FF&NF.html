@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FF&NF</title>
+</head>
+<body>
+<div><input type="text" id="cache"></div>
+<div><input type="text" id="work"></div>
+<button onclick="FF()">FF</button>
+<button onclick="NF()">NF</button>
+</body>
+<script>
+//    var aCache = [100,200,300,400,500];
+//    var aWork = [70,80,90,100,350,600];
+    var aCache = [];
+    var aWork = [];
+    var oCache = document.getElementById('cache');
+    var oWork = document.getElementById('work');
+    function FF() {
+        aCache = oCache.value.split(',');
+        aWork = oWork.value.split(',');
+        console.log(aWork);
+        for(var i=0;i<aWork.length;i++){
+            for(var j=0;j<aCache.length;j++){
+                console.log(aWork[i]);
+                if(parseInt(aWork[i])<parseInt(aCache[j])){
+                    aCache[j] = aCache[j]-aWork[i];
+                    console.log(aCache[j]);
+                    break;
+                }
+            }
+            if(j == aCache.length){
+                console.log(j);
+                alert("内存分配失败");
+                break;
+            }
+
+        }
+        if(i == aWork.length){
+            alert("分配完成");
+        }
+    }
+    function NF() {
+        var index = 0;
+        aCache = oCache.value.split(',');
+        aWork = oWork.value.split(',');
+        for(var i=0;i<aWork.length;i++){
+            for(var j=index;j<aCache.length;j++){
+                if(parseInt(aWork[i])<parseInt(aCache[j])){
+                    aCache[j] = aCache[j] - aWork[i];
+                    index = j;
+                    break;
+                }
+            }
+            if(j == aCache.length){
+                for(j=0;j<aCache.length;j++){
+                    if(parseInt(aWork[i])<parseInt(aCache[j])){
+                        aCache[j] = aCache[j] - aWork[i];
+                        index = j;
+                        break;
+                    }
+                }
+                if(j == aCache.length){
+                    alert("内存分配失败");
+                    break;
+                }
+            }
+        }
+        if(i == aWork.length){
+            alert("分配完成");
+        }
+    }
+</script>
+</html>
