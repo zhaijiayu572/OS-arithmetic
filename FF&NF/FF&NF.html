@@ -5,8 +5,8 @@
     <title>FF&NF</title>
 </head>
 <body>
-<div><input type="text" id="cache"></div>
-<div><input type="text" id="work"></div>
+<div>内存分区表<input type="text" id="cache"></div>
+<div>进程<input type="text" id="work"></div>
 <button onclick="FF()">FF</button>
 <button onclick="NF()">NF</button>
 </body>
@@ -23,13 +23,16 @@
         console.log(aWork);
         for(var i=0;i<aWork.length;i++){
             for(var j=0;j<aCache.length;j++){
-                console.log(aWork[i]);
-                if(parseInt(aWork[i])<parseInt(aCache[j])){
+                console.log("当前程序需求的内存为"+aWork[i]);
+                if(parseInt(aWork[i])<=parseInt(aCache[j])){
+                    console.log("当前对第"+j+"块内存进行分配，内存大小现在为"+aCache[j]);
                     aCache[j] = aCache[j]-aWork[i];
-                    console.log(aCache[j]);
+                    console.log("内存"+j+"剩余为"+aCache[j]);
                     break;
                 }
+
             }
+            console.log("\n");
             if(j == aCache.length){
                 console.log(j);
                 alert("内存分配失败");
@@ -39,25 +42,31 @@
         }
         if(i == aWork.length){
             alert("分配完成");
+            console.log("内存内容为"+aCache);
         }
     }
     function NF() {
-        var index = 0;
+        var index = -1;
         aCache = oCache.value.split(',');
         aWork = oWork.value.split(',');
         for(var i=0;i<aWork.length;i++){
-            for(var j=index;j<aCache.length;j++){
-                if(parseInt(aWork[i])<parseInt(aCache[j])){
+            console.log("当前程序需求的内存为"+aWork[i]);
+            for(var j=index+1;j<aCache.length;j++){
+                if(parseInt(aWork[i])<=parseInt(aCache[j])){
+                    console.log("当前对第"+j+"块内存进行分配，内存大小现在为"+aCache[j]);
                     aCache[j] = aCache[j] - aWork[i];
                     index = j;
+                    console.log("内存"+j+"剩余为"+aCache[j]);
                     break;
                 }
             }
             if(j == aCache.length){
                 for(j=0;j<aCache.length;j++){
-                    if(parseInt(aWork[i])<parseInt(aCache[j])){
+                    if(parseInt(aWork[i])<=parseInt(aCache[j])){
+                        console.log("内存分配失败，从头部开始查找，当前对第"+j+"块内存进行分配，内存大小现在为"+aCache[j]);
                         aCache[j] = aCache[j] - aWork[i];
                         index = j;
+                        console.log("内存"+j+"剩余为"+aCache[j]);
                         break;
                     }
                 }
@@ -66,9 +75,11 @@
                     break;
                 }
             }
+            console.log("\n");
         }
         if(i == aWork.length){
             alert("分配完成");
+            console.log("内存内容为"+aCache);
         }
     }
 </script>
