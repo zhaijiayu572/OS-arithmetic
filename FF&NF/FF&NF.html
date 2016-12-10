@@ -17,6 +17,7 @@
     var aWork = [];
     var oCache = document.getElementById('cache');
     var oWork = document.getElementById('work');
+    var aPositon = [];
     function FF() {
         aCache = oCache.value.split(',');
         aWork = oWork.value.split(',');
@@ -27,6 +28,7 @@
                 if(parseInt(aWork[i])<=parseInt(aCache[j])){
                     console.log("当前对第"+j+"块内存进行分配，内存大小现在为"+aCache[j]);
                     aCache[j] = aCache[j]-aWork[i];
+                    aPositon.push(j);
                     console.log("内存"+j+"剩余为"+aCache[j]);
                     break;
                 }
@@ -82,5 +84,6 @@
             console.log("内存内容为"+aCache);
         }
     }
+    
 </script>
 </html>

@@ -42,7 +42,7 @@
                             iMax = i;
                         }
                     }
-                    console.log(iMax);
+                    console.log("第"+iMax+"个位置发生替换");
                     aPage[iMax] = aProcess[iProcessIndex];
                     aClock[iMax] = 0;
                 }
@@ -70,8 +70,8 @@
                 alert("完成");
                 oShow.onclick = null;
             }
-            console.log(aPage);
-            console.log(aClock);
+            console.log("页面的内容为:"+aPage);
+            console.log("页面中的元素的生存时间:"+aClock);
         }
     })()
 </script>

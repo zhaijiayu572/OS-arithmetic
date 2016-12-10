@@ -22,12 +22,16 @@
     <button onclick="finish()" style="display: none" id="finish">finish</button><br/>
     <button onclick="result()" style="display: none" id="result">result</button><br/>
 </ul>
+
 <script>
     var aMaxVal = [];
     var aNeedVal = [];
     var aAllocationVal = [];
     var iAvailableVal = 0;
     var aProcess = [];
+    var aSavarQue = [];
+    var iRequest = 0;
+    var iNow = 0;
     function max() {
         var Number = $("#number").val();
         alert(Number);
@@ -35,7 +39,7 @@
         {
             $("#Max").append("<input type='text' class='max' placeholder='进程"+(i+1)+"'>" +
                     "<br/><h3>输入第"+(i+1)+"个进程最大资源</h3>");
-            aProcess.push('p'+i);
+            aProcess.push(i);
         }
         $("#next").show();
     }
@@ -86,22 +90,36 @@
 //        console.log(iAvailableVal);
 
         }
-
-
+        $("submit").onclick = function () {
+            var request = $(".request").val();
+            
+            iAvailableVal = iAvailableVal - request;
+            aAllocationVal[aSaveQueue[iNow]] = aAllocationVal[aSaveQueue[iNow]] - request;
+            aNeedVal[aSaveQueue[iNow]] = aNeedVal[aSaveQueue[iNow]] -request;
+            iNow++;
+        };
+        function addRequest() {
+            $("body").append("<input type='text' class='request' placeholder='输入请求'>");
+            $("body").append("<button id='submit'>'submit'</button>");
+        }
         var aSaveQueue = [];
         function result() {
+            var aNeedValue = aNeedVal;
+            var iAvailableValue = iAvailableVal;
+            var aAllocationValue = aAllocationVal;
             var iFlag = -1;
-            console.log(aNeedVal.length);
-            if(aNeedVal.length == 0) {
+            console.log(aNeedValue.length);
+            if(aNeedValue.length == 0) {
                 alert('程序安全');
                 alert("安全序列为"+aSaveQueue);
+                addRequest();
             }else{
-                for(var i=0;i<aNeedVal.length;i++) {
-                    if(iAvailableVal>(aNeedVal[i]-1)) {
-                        console.log(iAvailableVal + "available");
-                        console.log(aNeedVal[i] + 'need');
+                for(var i=0;i<aNeedValue.length;i++) {
+                    if(iAvailableValue>(aNeedValue[i]-1)) {
+                        console.log(iAvailableValue + "available");
+                        console.log(aNeedValue[i] + 'need');
                         iFlag = i;
-                        aNeedVal.splice(i,1);
+                        aNeedValue.splice(i,1);
                         aSaveQueue.push(aProcess[i]);
                         aProcess.splice(i,1);
                         break;
@@ -109,9 +127,9 @@
 
                 }
                 if(iFlag!= -1) {
-                    console.log(aAllocationVal[iFlag] + "allocation");
-                    iAvailableVal = parseInt(iAvailableVal)+ parseInt(aAllocationVal[iFlag]);
-                    console.log(iAvailableVal + "available");
+                    console.log(aAllocationValue[iFlag] + "allocation");
+                    iAvailableVal = parseInt(iAvailableValue)+ parseInt(aAllocationValue[iFlag]);
+                    console.log(iAvailableValue + "available");
                     result();
                 }else {
                     alert("系统不安全");
